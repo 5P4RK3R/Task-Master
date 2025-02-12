@@ -7,3 +7,14 @@ edition = "2021"
 
 [dependencies]
 actix-web = "4.7.0"
+async-trait = "0.1.81"
+json = "0.12.4"
+serde = { version = "1.0", features = ["derive"] }
+surrealdb = "1.5.4"
+uuid = "1.10.0"
+validator = "0.18.1"
+
+
+[[bin]]
+name = "Task-Master"
+path = "main.rs"

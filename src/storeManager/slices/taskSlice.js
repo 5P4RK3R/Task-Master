@@ -60,7 +60,7 @@ export const selectTask = (state) => state.task;
 export const fetchUsers = (companyId, token) => async (dispatch) => {
   const header = { Authorization: `Bearer ${token}` };
   const data = await axios.get(
-    `https://localhost:5000/team?product=outreach&company_id=${companyId}`,
+    `https://localhost:8081/team?product=outreach&company_id=${companyId}`,
     { headers: header }
   );
   dispatch(getUsers(data.data.results.data));
@@ -68,7 +68,7 @@ export const fetchUsers = (companyId, token) => async (dispatch) => {
 export const fetchTasks = (companyId, token) => async (dispatch) => {
   const header = { Authorization: `Bearer ${token}` };
   const data = await axios.get(
-    `https://localhost:5000/task/lead_cb11a91b1bff4c42806b5c8dea51425d?company_id=${companyId}`,
+    `https://localhost:8081/task/lead_cb11a91b1bff4c42806b5c8dea51425d?company_id=${companyId}`,
     { headers: header }
   );
   dispatch(getTasks(data.data.results));
@@ -81,7 +81,7 @@ export const setTask =
 export const removeTask = (auth, id) => async (dispatch) => {
   const header = { Authorization: `Bearer ${auth.authToken}` };
   const data = await axios.delete(
-    ` https://localhost:5000/task/lead_cb11a91b1bff4c42806b5c8dea51425d/${id}?company_id=${auth.companyId}`,
+    ` https://localhost:8081/task/lead_cb11a91b1bff4c42806b5c8dea51425d/${id}?company_id=${auth.companyId}`,
     { headers: header }
   );
   dispatch(deleteTask(id));
@@ -110,7 +110,7 @@ export const addTask = (companyId, token, task) => async (dispatch) => {
 
   const header = { Authorization: `Bearer ${token}` };
   const data = await axios.post(
-    `https://localhost:5000/task/lead_cb11a91b1bff4c42806b5c8dea51425d?company_id=${companyId}`,
+    `https://localhost:8081/task/lead_cb11a91b1bff4c42806b5c8dea51425d?company_id=${companyId}`,
     body,
     { headers: header }
   );
@@ -140,7 +140,7 @@ export const updateTask = (companyId, token, task) => async (dispatch) => {
 
   const header = { Authorization: `Bearer ${token}` };
   const data = await axios.put(
-    `https://localhost:5000/task/lead_cb11a91b1bff4c42806b5c8dea51425d/${task.id}?company_id=${companyId}`,
+    `https://localhost:8081/task/lead_cb11a91b1bff4c42806b5c8dea51425d/${task.id}?company_id=${companyId}`,
     body,
     { headers: header }
   );

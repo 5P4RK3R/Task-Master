@@ -27,7 +27,7 @@ export const fetchAuth = () => async (dispatch) => {
     password: "12345678",
   };
 
-  const data = await axios.post(`https://localhost:5000/login`, body);
+  const data = await axios.post(`https://localhost:8081/login`, body);
   dispatch(getAuth(data.data.results));
 };
 export default authSlice.reducer;
