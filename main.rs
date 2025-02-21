@@ -289,8 +289,30 @@
 //     }
 // }
 use actix_web::{post,get, web, App, HttpServer,HttpResponse, Responder};
-// mod model;
-// use model::todo::AddTodo;
+use std::sync::Mutex;
+use std::collections::HashMap;
+
+// use utoipa::OpenApi;
+use utoipa_swagger_ui::SwaggerUi;
+// use uuid::Uuid;
+mod model;
+// mod routes;
+#[allow(non_snake_case)]
+mod storeManager;
+// use storeManager::manager::*;
+#[allow(unused_imports)]
+use model::task::AddTodo;
+// use routes::task::init_task_routes;
+use crate::storeManager::store::AppState;
+use crate::storeManager::manager::{get_tasks,create_task,create_user,update_task,delete_task};
+// use crate::storeManager::manager::{get_tasks};
+// #[warn(unused_imports)]
+// use crate::model::todo::AddTodo;
+// /// OpenAPI Documentation
+// #[derive(OpenApi)]
+// #[openapi(paths(
+//     routes::task::init_task_routes,
+// ), components(schemas(Task)))]
 #[get("/")]
 async fn index() -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
@@ -307,22 +329,56 @@ async fn echo(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
 }
 
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
+// async fn manual_hello() -> impl Responder {
+//     HttpResponse::Ok().body("Hey there!")
+// }
+
+// #[actix_web::main]
+// async fn main() -> std::io::Result<()> {
+//     println!("http://127.0.0.1:8081");
+//     HttpServer::new(|| App::new().service(index)
+//     // .service(
+//     //     // prefixes all resources and routes attached to it...
+//     //     web::scope("/app")
+//     //     // ...so this handles requests for `GET /app/index.html`
+//     //     .route("/index.html", web::get().to(index)),
+//     // )
+//     .service(hello).route("/hey", web::get().to(manual_hello)))
+//         .bind(("127.0.0.1", 8081))?
+//         .run()
+//         .await
+// }
+
+// struct ApiDoc;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    println!("http://127.0.0.1:8081");
-    HttpServer::new(|| App::new().service(index)
-    // .service(
-    //     // prefixes all resources and routes attached to it...
-    //     web::scope("/app")
-    //     // ...so this handles requests for `GET /app/index.html`
-    //     .route("/index.html", web::get().to(index)),
-    // )
-    .service(hello).route("/hey", web::get().to(manual_hello)))
-        .bind(("127.0.0.1", 8081))?
-        .run()
-        .await
+    // let openapi = ApiDoc::openapi();
+    env_logger::init();
+    println!("http:/localhost:9000");
+    let shared_data = web::Data::new(AppState {
+        users: Mutex::new(HashMap::new()),
+        tasks: Mutex::new(HashMap::new()),
+    });
+    
+    HttpServer::new(move || {
+        App::new()
+            .service(index)
+            .service(get_tasks)
+            .service(create_user)
+            .service(create_task)
+            .service(update_task)
+            .service(delete_task)
+            .service(SwaggerUi::new("/swagger"))
+            .service(SwaggerUi::new("/docs"))
+            .app_data(shared_data.clone())
+            // .route("/users", web::post().to(create_user))
+            // .route("/users/{user_id}/tasks", web::post().to(create_task))
+            // .route("/tasks", web::get().to(get_tasks))
+            // .route("/users/{user_id}/tasks/{task_id}", web::put().to(update_task))
+            // .route("/users/{user_id}/tasks/{task_id}", web::delete().to(delete_task))
+    })
+    .bind("localhost:9000")?
+    .run()
+    .await
 }

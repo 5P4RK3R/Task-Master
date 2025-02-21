@@ -6,13 +6,18 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+utoipa = { version = "4", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "4", features = ["actix-web"] }
 actix-web = "4.7.0"
 async-trait = "0.1.81"
 json = "0.12.4"
+uuid = { version = "1.7", features = ["v4", "serde"] }
 serde = { version = "1.0", features = ["derive"] }
-surrealdb = "1.5.4"
-uuid = "1.10.0"
-validator = "0.18.1"
+log = "0.4"                # Logging
+env_logger = "0.10"        # Logging setup
+validator = { version = "0.18.1", features = ["derive"] }  # Enable derive macro
+tokio = { version = "1", features = ["full"] }
+serde_json = "1.0.138"
 
 
 [[bin]]
