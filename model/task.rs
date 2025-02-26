@@ -16,6 +16,7 @@ pub struct Task {
     pub title: String,
     pub description: String,
     pub due_date: String,  // Can use chrono for DateTime
+    pub user: User,
     pub status: String,    // Enum can be used for stricter type safety
 }
 

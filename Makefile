@@ -73,7 +73,7 @@ server:
 
 serve:
 	run
-	start
+	server
 
 # watch:
 # 	cargo watch -c "cargo run" -w main.rs --ignore target/ --ignore .git/ -p 100

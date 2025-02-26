@@ -355,7 +355,7 @@ async fn echo(req_body: String) -> impl Responder {
 async fn main() -> std::io::Result<()> {
     // let openapi = ApiDoc::openapi();
     env_logger::init();
-    println!("http:/localhost:9000");
+    println!("http:/localhost:5000");
     let shared_data = web::Data::new(AppState {
         users: Mutex::new(HashMap::new()),
         tasks: Mutex::new(HashMap::new()),
@@ -378,7 +378,7 @@ async fn main() -> std::io::Result<()> {
             // .route("/users/{user_id}/tasks/{task_id}", web::put().to(update_task))
             // .route("/users/{user_id}/tasks/{task_id}", web::delete().to(delete_task))
     })
-    .bind("localhost:9000")?
+    .bind("localhost:5000")?
     .run()
     .await
 }

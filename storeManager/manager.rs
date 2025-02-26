@@ -28,22 +28,45 @@ struct TaskPath {
 // #[derive(serde::Deserialize)]
 #[utoipa::path(
     post,
-    path = "/users/{name}",
+    path = "/users",
+    request_body = User,
+    responses(
+        (status = 200, description = "User Created successfully"),
+        (status = 400, description = "Invalid move")
+    )
+)]
+#[post("/users")]
+pub async fn create_user(state: web::Data<AppState>, user: web::Json<User>) -> impl Responder {
+    // println!("name:{}",name);
+    let mut users = state.users.lock().unwrap();
+    let user_id = Uuid::new_v4();
+    let user = User {
+        id: user_id,
+        name: user.name.clone(),
+    };
+
+    users.insert(user_id, user.clone());
+    HttpResponse::Created().json(user)
+}
+// Get all user
+// #[derive(serde::Deserialize)]
+#[utoipa::path(
+    get,
+    path = "/users",
     request_body = AppState,
     responses(
         (status = 200, description = "User Created successfully"),
         (status = 400, description = "Invalid move")
     )
 )]
-#[post("/users/{name}")]
-pub async fn create_user(state: web::Data<AppState>, name: web::Path<String>) -> impl Responder {
-    println!("name:{}",name);
-    let mut users = state.users.lock().unwrap();
-    let user_id = Uuid::new_v4();
-    let user = User { id: user_id, name: name.into_inner() };
-    
-    users.insert(user_id, user.clone());
-    HttpResponse::Created().json(user)
+#[get("/users")]
+pub async fn get_users(state: web::Data<AppState>) -> impl Responder {
+    let users_lock = state.users.lock().unwrap();
+    if users_lock.is_empty() {
+        HttpResponse::NotFound().body("No users found")
+    } else {
+        HttpResponse::Ok().json(&*users_lock)
+    }
 }
 
 // Create a task
@@ -64,6 +87,7 @@ pub async fn create_task(
         id: Uuid::new_v4(),
         title: task.title.clone(),
         description: task.description.clone(),
+        user: task.user.clone(),
         due_date: task.due_date.clone(),
         status: task.status.clone(),
     };
