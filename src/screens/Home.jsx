@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import Task from "../components/organisms/Task";
+import Input from "../components/atoms/Input";
+import Button from "../components/atoms/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,9 +9,14 @@ import {
   fetchTasks,
   fetchUsers,
 } from "../storeManager/slices/taskSlice";
+import {
+  selectUser,
+  addUser,
+} from "../storeManager/slices/userSlice";
 
 const Home = ({ auth }) => {
-  const { users, tasks } = useSelector(selectTask);
+  const { tasks } = useSelector(selectTask);
+  const { users } = useSelector(selectUser);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -22,6 +29,19 @@ const Home = ({ auth }) => {
   }, [auth]);
   return (
     <div className="container mx-auto">
+       <Input
+        id="username"
+        type="text"
+        label="Enter Username"
+        // event={setTaskDetail}
+        // value={taskDetail.task_date}
+        />
+        <Button
+          // event={saveTask}
+          bgColor="bg-blue-400"
+          textColor="text-white"
+          text="Create User"
+        />
       {tasks.map((taskDetail, index) => (
         <Task
           users={users}

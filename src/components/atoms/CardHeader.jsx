@@ -8,16 +8,16 @@ const CardHeader = ({ id }) => {
     dispatch(incrementTasks());
   };
   return (
-    <div className=" bg-slate-200	justify-evenly shadow-md border-solid border-2 w-96 flex flex-row space-x-4">
+    <div className=" bg-black	justify-evenly shadow-md border-solid border-2 w-96 flex flex-row space-x-4">
       <div className="flex flex-row  w-64">
-        <h2 className="mx-4">Task </h2>
-        <p>{id} </p>
+        <h2 className="mx-1 my-2 text-white">Task </h2>
+        <p className="mx-1 my-2 text-white">{id+1} </p>
       </div>
       <div className="flex justify-end w-64" onClick={addtask}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6"
-          fill="none"
+          className="h-6 w-6 text-white mx-1 my-2"
+          fill="white"
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}

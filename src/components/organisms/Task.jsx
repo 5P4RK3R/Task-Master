@@ -45,7 +45,7 @@ const Task = ({ users, taskDetail, id, auth, index }) => {
     <div className="flex flex-col m-4 shadow-md border-solid border-2 w-96">
       <CardHeader id={index} />
       {!taskDetail.modified ? (
-        <div className="bg-sky-100">
+        <div className="bg-white-100">
           <div className=" my-4 ">
             <Input
               id="task_msg"
@@ -54,26 +54,6 @@ const Task = ({ users, taskDetail, id, auth, index }) => {
               event={setTaskDetail}
               value={taskDetail.task_msg}
             />
-            <div className="flex flex-row my-4 justify-between">
-              <Input
-                id="task_date"
-                type="date"
-                label="Date"
-                event={setTaskDetail}
-                value={taskDetail.task_date}
-              />
-              <Input
-                id="task_time"
-                type="time"
-                label="Time"
-                event={setTaskDetail}
-                value={
-                  Number.isInteger(taskDetail.task_time)
-                    ? sectohrs(taskDetail.task_time)
-                    : taskDetail.task_time
-                }
-              />
-            </div>
             <Select
               id="assigned_user"
               type="time"
@@ -82,14 +62,42 @@ const Task = ({ users, taskDetail, id, auth, index }) => {
               event={setTaskDetail}
               options={users}
             />
+            <Select
+              id="assigned_status"
+              type="time"
+              label="Assign Status"
+              value={taskDetail.assigned_user}
+              event={setTaskDetail}
+              options={users}
+            />
           </div>
+          <div className="flex flex-row my-4 justify-between">
+              <Input
+                id="task_date"
+                type="date"
+                label="Due Date"
+                event={setTaskDetail}
+                value={taskDetail.task_date}
+              />
+              <Input
+                id="task_time"
+                type="time"
+                label="Due Time"
+                event={setTaskDetail}
+                value={
+                  Number.isInteger(taskDetail.task_time)
+                    ? sectohrs(taskDetail.task_time)
+                    : taskDetail.task_time
+                }
+              />
+            </div>
           <div className="flex flex-row justify-evenly">
             {taskDetail.modified_by ? <Trash event={deleteTask} /> : null}
             <div className="flex">
               <Button event={cancelTask} bgColor="bg-white" text="Cancel" />
               <Button
                 event={saveTask}
-                bgColor="bg-green-400"
+                bgColor="bg-blue-400"
                 textColor="text-white"
                 text="Save"
               />

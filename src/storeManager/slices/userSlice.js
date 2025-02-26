@@ -1,20 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const task = {
-  task_msg: "",
-  task_date: "",
-  task_time: "",
-  assigned_user: "",
+const user = {
+  user: "",
 };
 const initialState = {
-  taskDetail: task,
-  tasks: [task],
+  users: [user],
 
-  users: [],
+  user: "",
 };
 
-export const taskSlice = createSlice({
-  name: "task",
+export const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
     getUsers: (state, { payload }) => {
@@ -32,8 +28,8 @@ export const taskSlice = createSlice({
         state.tasks[payload.id][payload.name] = payload.value;
       }
     },
-    addTasks: (state, { payload }) => {
-      state.tasks = [payload];
+    addUsers: (state, { payload }) => {
+      state.users = [payload];
     },
     deleteTask: (state, { payload }) => {
       let index = state.tasks.findIndex((v) => v.id === payload?.id);
@@ -55,7 +51,7 @@ export const {
   incrementTasks,
 } = taskSlice.actions;
 
-export const selectTask = (state) => state.task;
+export const selectUser = (state) => state.user;
 
 export const fetchUsers = (companyId, token) => async (dispatch) => {
   const header = { Authorization: `Bearer ${token}` };
@@ -88,34 +84,29 @@ export const removeTask = (auth, id) => async (dispatch) => {
   dispatch(fetchTasks(auth.companyId, auth.authToken));
 };
 
-export const addTask = (companyId, token, task) => async (dispatch) => {
-  var taskTime = null; // split it at the colons
+export const addUser = (user) => async (dispatch) => {
+  // var taskTime = null; // split it at the colons
 
   // minutes are worth 60 seconds. Hours are worth 60 minutes.
-  var seconds = null;
-  if (!Number.isInteger(task.task_time)) {
-    taskTime = task.task_time.split(":");
-    seconds = +taskTime[0] * 60 * 60 + +taskTime[1] * 60 + +taskTime[2];
-  } else {
-    seconds = task.task_time;
-  }
+  // var seconds = null;
+  // if (!Number.isInteger(task.task_time)) {
+  //   taskTime = task.task_time.split(":");
+  //   seconds = +taskTime[0] * 60 * 60 + +taskTime[1] * 60 + +taskTime[2];
+  // } else {
+  //   seconds = task.task_time;
+  // }
   let body = {
-    assigned_user: task.assigned_user,
-    task_date: task.task_date,
-    task_time: seconds,
-    is_completed: 0,
-    time_zone: 19800,
-    task_msg: task.task_msg,
+    user: user
   };
 
   const header = { Authorization: `Bearer ${token}` };
   const data = await axios.post(
-    `https://localhost:5000/task/lead_cb11a91b1bff4c42806b5c8dea51425d?company_id=${companyId}`,
+    `https://localhost:5000/users`,
     body,
     { headers: header }
   );
-  dispatch(addTasks(data.data.results));
-  dispatch(fetchTasks(companyId, token));
+  dispatch(addUsers(data.data.results));
+  // dispatch(fetchTasks(companyId, token));
 };
 export const updateTask = (companyId, token, task) => async (dispatch) => {
   var taskTime = null; // split it at the colons

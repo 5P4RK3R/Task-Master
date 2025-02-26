@@ -4,7 +4,7 @@ const Button = ({ text, event, bgColor, textColor }) => {
   return (
     <div
       type="button"
-      className={`shadow-md border-solid ${textColor} ${bgColor} w-32 mx-4 my-6 p-2`}
+      className={`shadow-md border-2 border-black border-solid ${textColor} ${bgColor} w-32 mx-4 my-6 p-2`}
       onClick={event}
     >
       {text}
