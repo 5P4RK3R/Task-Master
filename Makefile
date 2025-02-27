@@ -69,7 +69,7 @@ run:
 	
 server:
 	mkdir -p $(OUTPUT_DIR)
-	npm start 
+	cd sveltekit & npm run dev -- --open 
 
 serve:
 	run
